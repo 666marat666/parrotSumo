@@ -1,4 +1,11 @@
 "use strict";
+/* QR CODE */
+var Canvas = require('canvas')
+  , Image = Canvas.Image
+  , qrcode = require('/home/erwan/CODECAMP/node/node_modules/jsqrcode/src/qrcode.js')(Canvas)
+
+
+
 
 var sumo = require('node-sumo');
 var cv = require('opencv');
@@ -50,6 +57,9 @@ function getColorFromImage(im) {
 }
 
 var colorThief = new color();
+var image = new Image();
+var result = null;
+
 setInterval(function() {
   if (buf == null) {
    return;
@@ -59,9 +69,21 @@ setInterval(function() {
 	if (err) console.log(err);
 	if (im.width() < 1 || im.height() < 1) console.log('Image has no size');
 	try {
-	    getColorFromImage(im);
+//	    getColorFromImage(im);
+
 	    w.show(im);
 	    w.blockingWaitKey(0, 50);
+	    /* TEST QR CODE */
+
+	    image.src= buf;
+//	    image.src= im;
+	    result = qrcode.decode(image)
+	    console.log('||||||||result of qr code: ' + result);
+
+	    
+	    
+	    /* END TEST QRCODE  */
+
 	} catch(e) {
 //	    console.log(e);
 	}
