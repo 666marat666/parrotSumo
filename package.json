@@ -1,0 +1,26 @@
+{
+  "name": "parrot-sumo",
+  "version": "0.0.1",
+  "description": "ETNA Project Code Camp Maker",
+  "main": "test.js",
+  "dependencies": {
+    "color-thief": "^2.2.1",
+    "fs": "^0.0.2",
+    "node-sumo": "^0.0.1",
+    "opencv": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "nodemon test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boehm-e/parrotSumo.git"
+  },
+  "author": "Erwan BOEHM, Steven BOEHM, Bastien CHEVALLIER, Sylvain Lasjunies\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[DASJUNIES",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boehm-e/parrotSumo/issues"
+  },
+  "homepage": "https://github.com/boehm-e/parrotSumo#readme"
+}
