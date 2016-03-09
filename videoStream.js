@@ -5,6 +5,7 @@ var cv = require('opencv');
 var color   = require('color-thief');
 var chooseColor = require('./sumo_modules/colordif').chooseColor;
 
+var colorThief = new color();
 var drone = sumo.createClient();
 var video = drone.getVideoStream();
 var buf = null;

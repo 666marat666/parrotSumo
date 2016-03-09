@@ -2,6 +2,10 @@
 
 var sumo = require('node-sumo');
 var cv = require('opencv');
+var color   = require('color-thief');
+var chooseColor = require('./sumo_modules/colordif').chooseColor;
+
+var colorThief = new color();
 var drone = sumo.createClient();
 var video = drone.getVideoStream();
 var buf = null;
@@ -11,7 +15,6 @@ drone.postureJumper();
 console.log("Connecting...");
 drone.connect(function() {
   console.log("Connected !");
-  console.log("===== Starting Image Analysis =====\n");
   launchShapeDetection();
 });
 
@@ -31,7 +34,6 @@ function launchShapeDetection () {
 	}
 	
 	try {
-	    console.log("--- New Iteration ---\n");
 	    shapeDetection();
 	    
 	} catch(e) {
@@ -64,7 +66,6 @@ function shapeDetection() {
 	im_canny.dilate(nIters);
 	
 	var contours = im_canny.findContours();
-	console.log("Contours count : " + contours.size())
 	var validAreas = 0;
 	for(var i = 0; i < contours.size(); i++) {
 	    
@@ -87,7 +88,6 @@ function shapeDetection() {
       		    contours.point(i, 3)
     		]
 		points.sort(compare);
-		console.log(points);
 		if (Math.abs(Math.abs(points[0].x - points[3].x) - Math.abs(points[0].y - points[3].y)) < 50)
 		    display = true;
 		break;
@@ -99,11 +99,11 @@ function shapeDetection() {
 	
 	if (display == true) {
 	    var im2 = im.crop(points[0].x, points[0].y, (points[3].x - points[0].x), (points[3].y - points[0].y));
+	    getColorFromImage(im2);
 	    w.show(im2);
 	} else
 	    w.show(im);
 	w.blockingWaitKey(0,50);
-	console.log("Valid areas : " + validAreas)
 	
 	//	out.save('./out.png');
     });
@@ -119,4 +119,25 @@ function compare(a,b) {
     return 1;
   else 
     return 0;
+}
+
+function getColorFromImage(im) {
+    var colorMax = colorThief.getColor(im.toBuffer());
+    var similar = JSON.stringify(chooseColor(rgbToHex(colorMax)));
+//    console.log("REAL   : "+colorMax);
+    console.log("ChoosenColor : "+similar);
+}
+
+function rgbToHex(tab) {
+    var str="#", tmp, tmp2;
+    
+    for (var i=0; i < tab.length; i++) {
+	tmp = tab[i].toString(16).toUpperCase();
+	if (tmp.length < 2)
+	        tmp2 = tmp + ""+tmp;
+	else
+	        tmp2 = tmp;
+	str+=tmp2;
+    }
+    return str;
 }
