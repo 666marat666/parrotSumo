@@ -11,7 +11,7 @@ drone.postureJumper();
 console.log("Connecting...");
 drone.connect(function() {
   console.log("Connected !");
-  console.log("===== Starting Image Analysis =====");
+  console.log("===== Starting Image Analysis =====\n");
   launchShapeDetection();
 });
 
@@ -31,22 +31,20 @@ function launchShapeDetection () {
 	  }
 
 	  try {
-	  	console.log("--- New Iteration ---");
+	  	console.log("--- New Iteration ---\n");
 	  	shapeDetection();
 
 	  } catch(e) {
 	    console.log(e);
 	  }
-	}, 100);
+	}, 500);
 }
-
-
 
 
 function shapeDetection() {
 var lowThresh = 0;
 var highThresh = 100;
-var nIters = 4;
+var nIters = 2;
 var minArea = 2000;
 
 var BLUE = [0, 255, 0]; //B, G, R
@@ -71,29 +69,38 @@ cv.readImage(buf, function(err, im) {
 	for(var i = 0; i < contours.size(); i++) {
 
 		if(contours.area(i) < minArea) continue;
-
 		validAreas ++;
 		var arcLength = contours.arcLength(i, true);
-		contours.approxPolyDP(i, 0.01 * arcLength, true);
-		console.log("ApproxPoly Contours count : " + contours.size())
-
+		contours.approxPolyDP(i, 0.017 * arcLength, true);
+		
 		switch(contours.cornerCount(i)) {
 		case 3:
 			im.drawContour(contours, i, GREEN);
+
 			break;
 		case 4:
 			im.drawContour(contours, i, RED);
+			var points = [
+      			contours.point(i, 0),
+      			contours.point(i, 1),
+      			contours.point(i, 2),
+      			contours.point(i, 3)
+    		]
+			console.log("Point 0 : [" + points[0].x + ", " + points[0].y + "]");
 			break;
 		default:
 			break;
 			//im.drawContour(contours, i, WHITE);
 		}
 	}
-	console.log("Valid areas : " + validAreas)
 	w.show(im);
 	w.blockingWaitKey(0,50);
+	console.log("Valid areas : " + validAreas)
+	
 //	out.save('./out.png');
 });
 }
+
+
 
 
