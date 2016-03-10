@@ -7,7 +7,6 @@
     "color-difference": "^0.3.4",
     "color-thief": "git+https://github.com/Bastorx/color-thief.git",
     "lodash": "^4.6.1",
-    "node-sumo": "git+https://github.com/Bastorx/node-sumo.git",
     "opencv": "^5.0.0"
   },
   "devDependencies": {},
