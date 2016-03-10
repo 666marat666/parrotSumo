@@ -12,20 +12,15 @@ var buf = null;
 var w = new cv.NamedWindow("Video", 0);
 
 drone.connect(function() {
-    console.log("Connected...");
-//    drone.postureJumper();
-    setTimeout(function() {
-//	drone.animationsHighJump();
-    }, 5000);
-
-});
-
-drone.on("battery", function(battery) {
-  console.log("battery: " + battery);
-});
-
-video.on("data", function(data) {
-  buf = data;
+  drone.move(50, 0);
+  var i = setInterval(function (){
+    drone.angle(90);
+  }, 1000);
+  setTimeout(function() {
+    drone.stop();
+    clearInterval(i);
+  }, 10000);
+  
 });
 
 
