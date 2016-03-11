@@ -101,6 +101,7 @@ function shapeDetection() {
 	if (display == true) {
 	    var im2 = im.crop(points[0].x, points[0].y, (points[3].x - points[0].x), (points[3].y - points[0].y));
 	    getColorFromImage(im2);
+	    calibrate(points);
 	    w.show(im2);
 	} else
 	    w.show(im);
@@ -110,6 +111,18 @@ function shapeDetection() {
     });
 }
 
+
+
+
+function calibrate(points) {
+    var xA = points[0].x;
+    var xB = Math.abs(points[0].x - points[1].x) < 50 ? points[1].x : points[2].x;
+
+    console.log(xA+" , "+xB)
+
+    console.log(((320-((xA-xB)/2)-xA)*95)/640);
+    drone.angle(-((320-((xA-xB)/2)-xA)*95)/640);
+}
 
 
 
