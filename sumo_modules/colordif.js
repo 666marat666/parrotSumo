@@ -1,14 +1,22 @@
 var cd        =  require('color-difference');
-var tabColor  = ["#CC0000", "#FF33CC", "#FFFF00", "#3366FF", "#33CC00"];
+var tabColor  = ["#82DA93", "#F5A39C", "#A9C092", "#D07CAF"];
+var array = {
+    "#82DA93" : "VERT",
+    "#F5A39C" : "ORANGE",
+    "#A9C092" : "JAUNE",
+    "#D07CAF" : "ROSE"
+}
 
 var chooseColor = function(currentColor) {
+    console.log(currentColor);
     var tabDiff   = [];
     cd = require('color-difference');
     for (var i=0; i < tabColor.length; i++) {
 	tabDiff.push({color: tabColor[i], percentDiff: cd.compare(currentColor, tabColor[i], "EuclideanDistance")});
     }
     tabDiff.sort(compare1);
-    return tabDiff[0];
+    return array[tabDiff[0].color];
+//    return tabDiff[0];
 }
 
 

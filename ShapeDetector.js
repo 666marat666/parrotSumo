@@ -44,6 +44,7 @@ function launchShapeDetection () {
 
 
 function shapeDetection() {
+//    console.log("shape detection");
     var lowThresh  = 0;
     var highThresh = 100;
     var nIters     = 2;
@@ -123,7 +124,8 @@ function compare(a,b) {
 
 function getColorFromImage(im) {
     var colorMax = colorThief.getColor(im.toBuffer());
-    var similar = JSON.stringify(chooseColor(rgbToHex(colorMax)));
+//    var similar = JSON.stringify(chooseColor(rgbToHex(colorMax)));
+    var similar = chooseColor(rgbToHex(colorMax));
 //    console.log("REAL   : "+colorMax);
     console.log("ChoosenColor : "+similar);
 }
