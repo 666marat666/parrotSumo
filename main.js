@@ -47,7 +47,12 @@ function launchShapeDetection () {
 function shapeDetection() {
     cv.readImage(buf, function(err, im) {
 	var tabPoints  = sumoShape.detectPoints(im);
-	var tabSquares = sumoShape.detectSquare(im, tabPoints);
+	var tabSquare = sumoShape.detectSquare(im, tabPoints);
+	console.log("-------------------- tabSquare ---------------------");
+	console.dir(tabSquare[0]);
+	if (tabSquare[0])
+	    calibrate(tabSquare[0]);
+	console.log("----------------------------------------------------\n\n");
     });
 }
 

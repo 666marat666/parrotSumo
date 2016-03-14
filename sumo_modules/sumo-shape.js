@@ -17,7 +17,8 @@ function sumoShape() {
 }
 
 sumoShape.prototype.contours = null;
-sumoShape.prototype.test = "houhou";
+sumoShape.prototype.squareDeteced = false;
+sumoShape.prototype.imgSquare = null;
 
 sumoShape.prototype.detectPoints = function(im, obj) {
 
@@ -65,7 +66,7 @@ sumoShape.prototype.detectPoints = function(im, obj) {
 }
 
 
-sumoShape.prototype.detectSquare = function(img, tabPoints, display) {
+sumoShape.prototype.detectSquare = function(img, tabPoints) {
     var points, tabSquare = [], imgSquare, wAll, wSquare, i;
     
     wAll = new this.cv.NamedWindow("Video", 0);
@@ -81,17 +82,11 @@ sumoShape.prototype.detectSquare = function(img, tabPoints, display) {
 		tabSquare.push(tabPoints[i]);
 		img.drawContour(this.contours, i, this.RED); 
 	    }
-
-	    if (display === undefined || display === true) {
-		for (j=0; j < tabSquare.length; j++) {
-		    wSquare = new this.cv.NamedWindow("VideoSquare", 0);
-		    imgSquare = img.crop(points[0].x, points[0].y, (points[3].x - points[0].x), (points[3].y - points[0].y));
-		    wSquare.show(imgSquare);
-		    wSquare.blockingWaitKey(0,50);
-		}
-	    }
+	    for (j=0; j < tabSquare.length; j++)
+		this.imgSquare = img.crop(points[0].x, points[0].y, (points[3].x - points[0].x), (points[3].y - points[0].y));
 	}
     }
+    this.squareDeteced = (tabSquare.length >= 1) ? true : false;
     return (tabSquare);
 }
 
