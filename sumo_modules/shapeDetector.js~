@@ -1,0 +1,56 @@
+var cv = require('opencv');
+
+var lowThresh  = 0;
+var highThresh = 100;
+var nIters     = 2;
+var minArea    = 2000;    
+var BLUE  = [0, 255, 0]; //B, G, R
+var RED   = [0, 0, 255]; //B, G, R
+var GREEN = [0, 255, 0]; //B, G, R
+var WHITE = [255, 255, 255]; //B, G, R
+var display = false;
+
+function shapeDetection(im) {
+    var im_canny = im.copy();
+	
+    im_canny.canny(lowThresh, highThresh);
+    im_canny.dilate(nIters);
+	
+    var contours = im_canny.findContours();
+    console.log("Contours count : " + contours.size())
+    var validAreas = 0;
+    for(var i = 0; i < contours.size(); i++) {
+	        
+	if(contours.area(i) < minArea) continue;
+	validAreas ++;
+	var arcLength = contours.arcLength(i, true);
+	contours.approxPolyDP(i, 0.017 * arcLength, true);
+	
+	switch(contours.cornerCount(i)) {
+	case 4:
+	    im.drawContour(contours, i, RED);
+	    var points = [
+		contours.point(i, 0),
+		contours.point(i, 1),
+		contours.point(i, 2),
+		contours.point(i, 3)
+	    ]
+	    points.sort(compare);
+	    if (Math.abs(Math.abs(points[0].x - points[3].x) - Math.abs(points[0].y - points[3].y)) < 50)
+		display = true;
+	    break;
+	default:
+	    break;
+	}
+    }
+    
+    if (display == true) {
+	var im2 = im.crop(points[0].x, points[0].y, (points[3].x - points[0].x), (points[3].y - points[0].y));
+	w.show(im2);
+    } 
+
+    w.blockingWaitKey(0,50);
+    console.log("Valid areas : " + validAreas)
+    return points;
+}
+
