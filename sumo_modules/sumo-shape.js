@@ -5,15 +5,6 @@ function sumoShape() {
     this.GREEN      = [0, 255, 0];
     this.WHITE      = [255, 255, 255];
 
-    this.comparePoints = function(a,b) {
-	if (a.x + a.y < b.x + b.y)
-            return -1;
-	else if (a.x + a.y > b.x + b.y)
-            return 1;
-	else
-            return 0;
-    }    
-
 }
 
 sumoShape.prototype.contours = null;
@@ -89,6 +80,17 @@ sumoShape.prototype.detectSquare = function(img, tabPoints) {
     this.squareDeteced = (tabSquare.length >= 1) ? true : false;
     return (tabSquare);
 }
+
+
+function comparePoints(a,b) {
+    if (a.x + a.y < b.x + b.y)
+        return -1;
+    else if (a.x + a.y > b.x + b.y)
+        return 1;
+    else
+        return 0;
+}    
+
 
     
 
